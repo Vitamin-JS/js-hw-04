@@ -163,3 +163,107 @@
 // ===============================  ЗАДАЧА 4-4  =============================================================
 // ==========================================================================================================
 //
+// ------------- this В МЕТОДАХ ОБЪЕКТА.
+//
+// Расставь отсутствующие this в методах объекта account.
+
+// В комментариях показаны операции с объектом и ожидаемые результаты.
+
+//
+// -------------------------------  Решение  ---------------------------------------------------------------
+//
+// const account = {
+//   owner: "Mango",
+//   balance: 24000,
+//   discount: 0.1,
+//   orders: ["order-1", "order-2", "order-3"],
+//   changeDiscount(value) {
+//     this.discount = value; // Write code in this line
+//   },
+//   showOrders() {
+//     return this.orders; // Write code in this line
+//   },
+//   addOrder(cost, order) {
+//     this.balance -= cost; // Write code in this line
+//     this.orders.push(order); // Write code in this line
+//   },
+// };
+// account.changeDiscount(0.15);
+// account.addOrder(5000, "order-4");
+
+// const copyAccount = Object.assign({}, account); // ------------------------ Создает копию объекта {}  из перечисленных  - account
+// copyAccount.orders = [...account.orders];
+
+// console.log(copyAccount); // {owner: "Mango", balance: 19000, discount: 0.15, orders: Array(4), changeDiscount: ƒ, …}
+// console.log(copyAccount.orders); // (4) ["order-1", "order-2", "order-3", "order-4"]//
+
+// ---------------------------------------------------------------------------------------------------------
+//
+
+// account.changeDiscount(0.15);
+// console.log(account.discount); // 0.15  OK
+
+// console.log(account.showOrders());
+// // ['order-1', 'order-2', 'order-3']    OK
+
+// account.addOrder(5000, "order-4");
+// console.log(account.balance); // 19000   OK
+
+// console.log(account.showOrders());
+// // ['order-1', 'order-2', 'order-3', 'order-4']   OK
+//
+
+//
+// ===============================  ЗАДАЧА 4-5  =============================================================
+// ==========================================================================================================
+//
+// ------   bind ДЛЯ ЗАМЕНЫ this В МЕТОДАХ ОБЪЕКТА
+
+// Оформи вызов метода invokeInventoryAction таким образом, чтобы в качестве this для методов
+
+// inventory.add  И  inventory.remove    выступал объект inventory
+
+//
+// -------------------------------  Решение  ---------------------------------------------------------------
+//
+
+// const inventory = {
+//   items: ["Knife", "Gas mask"],
+//   add(itemName) {
+//     this.items.push(itemName);
+//     return `Adding ${itemName} to inventory`;
+//   },
+//   remove(itemName) {
+//     this.items = this.items.filter((item) => item !== itemName);
+//     return `Removing ${itemName} from inventory`;
+//   },
+// };
+
+// const invokeInventoryAction = function (itemName, action) {
+//   const act = action(itemName);
+//   const msg = `Invoking action on ${itemName}`;
+//   return { act, msg };
+// };
+
+// const invokeAdd = invokeInventoryAction(
+//   "Medkit",
+//   inventory.add.bind(inventory) // Write code in this line
+// );
+// const arrayAdd = [...inventory.items];
+// console.log(arrayAdd); // (3) ["Knife", "Gas mask", "Medkit"] -----------------OK
+
+// console.log(invokeAdd);
+// //{ act: 'Adding Medkit to inventory', msg: 'Invoking action on Medkit' }------ OK
+
+// const invokeRemove = invokeInventoryAction(
+//   "Gas mask",
+//   inventory.remove.bind(inventory) // Write code in this line
+// );
+
+// const arrayRemove = [...inventory.items];
+
+// console.log(invokeRemove);
+// //{ act: 'Removing Gas mask from inventory', msg: 'Invoking action on Gas mask' }------OK
+
+// console.log(arrayRemove);
+// // ['Knife', 'Medkit']-----------------------------------------------------------------OK
